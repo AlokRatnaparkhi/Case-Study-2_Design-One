@@ -8,7 +8,7 @@ if (isset($_POST['name']) && ! empty($_POST['name'])) {
   include 'SecureFactory.php';
   $policies=new SecureFactory();
   $securePolicies = array($policies->createSQLiStrategy(),$policies->createXSSStrategy());
-  
+  $name=$_POST['name'];
   foreach($securePolicies as $item) {
 		$securityContext=new StrategyContext($item);
 		$flag=$securityContext->executeSecurityStrategy($_POST['name']);
@@ -19,16 +19,16 @@ if (isset($_POST['name']) && ! empty($_POST['name'])) {
 				echo "Your security is compromised due to ".get_class($item)." ...Your IP address has been recorded<br>";
 				echo "Reason: Malicious script<br>";
 				echo "Attack Type:".get_class($item);
-
+				$name='';
 				
 			}
 	
 	}
  
-	  if($flag==false){
-		$name=$_POST['name'];
+	  
+		
 		setcookie('name', $name);
-	  }
+	  
   
   
 } else {
